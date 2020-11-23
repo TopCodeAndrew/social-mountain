@@ -6,6 +6,7 @@ import './App.css';
 
 import Header from './Header/Header';
 import Compose from './Compose/Compose';
+import SearchBar from './SearchBar'
 
 class App extends Component {
   constructor() {
@@ -18,6 +19,7 @@ class App extends Component {
     this.updatePost = this.updatePost.bind(this);
     this.deletePost = this.deletePost.bind(this);
     this.createPost = this.createPost.bind(this);
+    this.filterFn = this.filterFn.bind(this);
   }
 
   componentDidMount() {
@@ -47,12 +49,27 @@ class App extends Component {
     });
   }
 
+  filterFn(input) {
+    const { posts } = this.state;
+    let filteredPosts = [];
+
+    posts.map((e) => {
+      if (e.text.toLowerCase().includes(input.toLowerCase())) {
+        filteredPosts.push(e)
+      }
+    })
+
+    this.setState({ posts: [...filteredPosts] })
+  }
+
+
   render() {
     const { posts } = this.state;
 
     return (
       <div className="App__parent">
         <Header />
+        <SearchBar filterFn={this.filterFn} />
 
         <section className="App__content">
 
